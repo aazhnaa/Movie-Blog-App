@@ -14,7 +14,8 @@ const InputForm = ({setIsOpen}) => {
         
         e.preventDefault() 
         let endpoint =(isSignedUp)?"signUp":"login"
-        await axios.post(`http://localhost:8000/${endpoint }`,{email,password})
+        const backendURL = import.meta.env.VITE_BACKEND_URL ;
+        await axios.post(`${backendURL}/${endpoint}`, { email, password })
         .then((res)=>{
             //storing token and user in local storage :
             localStorage.setItem("token",res.data.token)

@@ -11,13 +11,15 @@ import axios from "axios";
 import { useLoaderData } from "react-router-dom"; //React hook provided by React Router v6.4+ (or later), used to access data loaded by a route's loader function.
 import { useEffect, useState } from "react";
 
+const backendURL = import.meta.env.VITE_BACKEND_URL;
+
 const MovieGrid = () => {
   const movies = useLoaderData();
   
   const [isOpen, setIsOpen] = useState(false)
   const deleteMovie = async (id) => {
     try {
-      await axios.delete(`http://localhost:8000/movie/${id}`);
+      await axios.delete(`${backendURL}/movie/${id}`);
       setAllMovies((movies) => movies.filter((movies) => movies._id !== id));
       let filterMovie = favMovies.filter((movies) => movies._id !== id); // other movies in favMovies
       localStorage.setItem("fav", JSON.stringify(filterMovie));
@@ -82,7 +84,7 @@ const MovieGrid = () => {
                   className="w-full h-80 object-cover"
                   src={
                     movie.poster
-                      ? `http://localhost:8000/images/${movie.poster}`
+                      ? `${backendURL}/images/${movie.poster}`
                       : poster
                   }
                 />

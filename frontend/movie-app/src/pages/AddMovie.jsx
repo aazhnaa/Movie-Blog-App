@@ -4,6 +4,7 @@ import {useNavigate} from 'react-router-dom'
 
 const AddMovie = () => {
 
+    const backendURL = import.meta.env.VITE_BACKEND_URL ;
     const[movieData, setMovieData]=useState({})//initially empty array
     const navigate = useNavigate()
 
@@ -16,7 +17,7 @@ const AddMovie = () => {
     const handleOnSubmit=async(e)=>{
         try{
           e.preventDefault()
-          await axios.post("http://localhost:8000/movie",movieData
+          await axios.post(`${backendURL}/movie`,movieData
             ,{
             headers:{
               'Content-Type':'multipart/form-data',

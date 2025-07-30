@@ -3,6 +3,7 @@ import axios from 'axios'
 import {useNavigate, useParams} from 'react-router-dom'
 
 const EditMovie = () => {
+  const backendURL = import.meta.env.VITE_BACKEND_URL ;
 
   const[movieData, setMovieData]=useState({
     title: '',
@@ -20,7 +21,7 @@ const EditMovie = () => {
     const handleOnSubmit=async(e)=>{
         try{
           e.preventDefault()
-          await axios.put(`http://localhost:8000/movie/${id}`,movieData
+          await axios.put(`${backendURL}/movie/${id}`,movieData
             ,{
             headers:{
               'Content-Type':'multipart/form-data',
@@ -43,7 +44,7 @@ const EditMovie = () => {
   useEffect(()=>{
     const getData=async()=>{
       try {
-        const response = await axios.get(`http://localhost:8000/movie/${id}`);
+        const response = await axios.get(`${backendURL}/movie/${id}`);
         const res = response.data;
         setMovieData({
           title: res.title,

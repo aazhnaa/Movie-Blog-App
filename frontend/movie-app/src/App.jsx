@@ -11,7 +11,8 @@ import Profile from './pages/Profile'
 //fetching data from database :
 const getAllMovies = async()=>{
   let allMovies=[]
-  await axios.get('http://localhost:8000/movie').then(res=>{
+  const backendURL = import.meta.env.VITE_BACKEND_URL;
+  await axios.get(`${backendURL}/movie`).then(res=>{
     allMovies=res.data
   })
 
