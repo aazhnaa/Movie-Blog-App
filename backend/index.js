@@ -8,11 +8,20 @@ const cors = require("cors")
 const PORT = process.env.PORT||3000 
 
 connectionDb()
-app.use(express.json())
+
 app.use(cors({
-    origin : "https://movie-blog-app.netlify.app/",
-    credentials: true
-}))
+  origin: "https://movie-blog-app.netlify.app",
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true
+}));
+
+app.use(express.json())
+
+// app.use(cors({
+//     origin : "https://movie-blog-app.netlify.app/",
+//     credentials: true
+// }))
 app.use(express.static("public"))
 
 
