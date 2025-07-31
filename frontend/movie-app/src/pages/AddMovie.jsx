@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
+import movie from '../../../../backend/models/movie';
 
 const AddMovie = () => {
 
@@ -28,6 +29,7 @@ const AddMovie = () => {
           formData.append("actors", movieData.actors);
           formData.append("review", movieData.review);
           formData.append("poster", movieData.file); 
+          console.log(movieData.file)
           await axios.post(`${backendURL}/movie`,formData
             ,{
             headers:{
