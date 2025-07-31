@@ -34,6 +34,7 @@ const addMovie =async(req,res)=>{
         const uploadResponse = await cloudinary.uploader.upload(req.file.path);
         imageUrl = uploadResponse.secure_url;
         imagePublicId = uploadResponse.public_id;
+        console.log("Image uploaded to Cloudinary:", imageUrl);
         fs.unlinkSync(req.file.path);        
     }
 
@@ -47,7 +48,7 @@ const addMovie =async(req,res)=>{
     })
 
     await newMovie.save()  
-    console.log("new movie added!")
+    console.log("new movie added!", newMovie)
 
     return res.status(200).json(newMovie)
     }
