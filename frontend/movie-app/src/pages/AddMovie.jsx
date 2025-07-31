@@ -5,7 +5,12 @@ import {useNavigate} from 'react-router-dom'
 const AddMovie = () => {
 
     const backendURL = import.meta.env.VITE_BACKEND_URL ;
-    const[movieData, setMovieData]=useState({})//initially empty array
+    const[movieData, setMovieData]=useState({
+    title: '',
+    release_year: '',
+    actors: '',
+    review: ''
+  })//initially empty array
     const navigate = useNavigate()
 
     const handleOnChange=(e)=>{
@@ -20,9 +25,8 @@ const AddMovie = () => {
           await axios.post(`${backendURL}/movie`,movieData
             ,{
             headers:{
-              'Content-Type':'multipart/form-data',
               'authorization':'bearer '+localStorage.getItem("token")
-                    }
+                }
              }
           )
           console.log("movie added")

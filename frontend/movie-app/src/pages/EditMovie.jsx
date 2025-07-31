@@ -20,16 +20,23 @@ const EditMovie = () => {
 
     const handleOnSubmit=async(e)=>{
         try{
-          e.preventDefault()
-          await axios.put(`${backendURL}/movie/${id}`,movieData
+          e.preventDefault();
+          const formData = new FormData();
+          formData.append("title", movieData.title);
+          formData.append("release_year", movieData.release_year);
+          formData.append("actors", movieData.actors);
+          formData.append("review", movieData.review);
+          if (movieData.file) {
+            formData.append("poster", movieData.file); // use "poster" to match multer field name
+          }
+          await axios.put(`${backendURL}/movie/${id}`,formData
             ,{
             headers:{
-              'Content-Type':'multipart/form-data',
               'authorization':'bearer '+localStorage.getItem("token")
                     }
              }
           )
-          console.log("movie added")
+          console.log("movie updated")
           navigate("/") // go to home page
         }
         catch(err){

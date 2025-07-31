@@ -17,6 +17,9 @@ const movieSchema = mongoose.Schema({
     poster:{
         type:String,
     },
+    posterId:{
+        type:String
+    }
 },{timestamps:true})
 
 module.exports=mongoose.model("movies",movieSchema)

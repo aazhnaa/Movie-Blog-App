@@ -1,24 +1,12 @@
 //for handling response
 const Movies = require("../models/movie") // we require the movie schema
-const multer = require("multer")
+const cloudinary = require("../config/cloudinary")
+const fs = require("fs")
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      cb(null, './public/images')
-    },
-
-    //our storage
-    filename: function (req, file, cb) {
-      const filename = Date.now() + '-' + file.fieldname
-      cb(null, filename)
-    }
-  })
-  //export this upload as well
-  const upload = multer({ storage: storage })
 
 
 //all movies
-const getMovies =async(req,res)=>{
+const getMovies = async(req,res)=>{
     const movies = await Movies.find()
     return res.json(movies)
 }
@@ -31,20 +19,43 @@ const getMovie =async(req,res)=>{
 
 //add Movie
 const addMovie =async(req,res)=>{
-    console.log(req.file) 
-    const {title,release_year,actors,review}=req.body
+    try{
+        const {title,release_year,actors,review}=req.body
 
     if(!title ){
         return res.status(400).json({
             error:"Required fields cannot be empty"
         })
     }
-    console.log("movie added")
-    const newMovie=await Movies.create({
-        title,release_year,actors,review,poster:req.file.filename
-    }) 
+    let imageUrl=''
+    let imagePublicId = ''
 
-    return res.json(newMovie)
+    if(req.file){
+        const uploadResponse = await cloudinary.uploader.upload(req.file.path);
+        imageUrl = uploadResponse.secure_url;
+        imagePublicId = uploadResponse.public_id;
+        fs.unlinkSync(req.file.path);        
+    }
+
+    const newMovie = new Movies({
+        title,
+        release_year,
+        actors,
+        review,
+        poster:imageUrl,
+        posterId:imagePublicId
+    })
+
+    await newMovie.save()  
+    console.log("new movie added!")
+
+    return res.status(200).json(newMovie)
+    }
+    catch(err){
+        return res.status(400).json({
+            error:"error 400. invalid request!"
+        })
+    }
 }
 
 const editMovie =async(req,res)=>{
@@ -52,11 +63,29 @@ const editMovie =async(req,res)=>{
     const movie = await Movies.findById(req.params.id)
 
     try{
-        if(movie){
-            let poster=req.file?.filename ? req.file?.filename : movie.poster
-            await Movies.findByIdAndUpdate(req.params.id,{...req.body,poster}, {new:true})
-            res.json({title,release_year,actors,review})
+        if(!movie){
+            return res.status(404).json({message:"Movie not found!"})
         }
+
+        if(req.file){
+            if(movie.posterId) {
+                await cloudinary.uploader.destroy(movie.posterId);
+            }
+            const uploadResponse = await cloudinary.uploader.upload(req.file.path);
+            fs.unlinkSync(req.file.path);
+
+            movie.poster = uploadResponse.secure_url;
+            movie.posterId = uploadResponse.public_id;
+        }
+
+        movie.title = title || movie.title;
+        movie.release_year = release_year || movie.release_year;
+        movie.actors = actors || movie.actors;
+        movie.review = review || movie.review;
+
+        await movie.save();
+        return res.status(200).json({ message: "Movie updated successfully", movie });
+
     }
     catch(err){
         return res.status(404).json({
@@ -66,9 +95,23 @@ const editMovie =async(req,res)=>{
 }
 
 const deleteMovie =async(req,res)=>{
-    try{
-        await Movies.deleteOne({_id:req.params.id})
-        res.json({status:"ok"})
+    try {
+        const { id } = req.params;
+
+        const movie = await Movies.findById(id);
+        if (!movie) {
+            return res.status(404).json({ error: "Movie not found" });
+        }
+
+        // If image exists on Cloudinary, delete it
+        if (movie.posterId) {
+            await cloudinary.uploader.destroy(movie.posterId);
+        }
+
+        // Delete movie document from MongoDB
+        await Movies.findByIdAndDelete(id);
+
+        res.status(200).json({ message: "Movie deleted successfully" });
     }
     catch(err){
         return res.status(400).json({error:"invalid"})
@@ -76,4 +119,4 @@ const deleteMovie =async(req,res)=>{
 }
 
 //exporting all
-module.exports={getMovies,getMovie,addMovie,editMovie,deleteMovie,upload}
+module.exports={getMovies,getMovie,addMovie,editMovie,deleteMovie}
