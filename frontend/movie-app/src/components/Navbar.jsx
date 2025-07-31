@@ -34,8 +34,6 @@ const Navbar = () => {
 
           <li ><NavLink to="/" className=" hover:text-blue-800">Home</NavLink></li>
           <li onClick={()=>isLogin && setIsOpen(true)}><NavLink to={(isLogin)?"/":"/favMovies"} className=" hover:text-blue-800">Favourites</NavLink></li>
-
-          <li onClick={()=>isLogin && setIsOpen(true)}><NavLink to={(isLogin)?"/":"/profile"} className="hover:text-blue-800">Profile</NavLink></li>
           
           <li className=" hover:text-blue-800" onClick={checkLogin}><p>{(isLogin)?"Login":"Log Out"}</p></li> 
           </ul>
