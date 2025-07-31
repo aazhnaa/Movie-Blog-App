@@ -27,8 +27,8 @@ const AddMovie = () => {
           formData.append("release_year", movieData.release_year);
           formData.append("actors", movieData.actors);
           formData.append("review", movieData.review);
-          formData.append("poster", movieData.file); 
-          console.log(movieData.file)
+          formData.append("poster", movieData.poster); 
+          console.log(movieData.poster)
           await axios.post(`${backendURL}/movie`,formData
             ,{
             headers:{
