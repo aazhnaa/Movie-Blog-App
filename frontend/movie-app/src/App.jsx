@@ -6,7 +6,6 @@ import {createBrowserRouter,RouterProvider} from 'react-router-dom'
 import axios from 'axios'
 import EditMovie from './pages/EditMovie'
 import FavMovie from './pages/FavMovie'
-import Profile from './pages/Profile'
 
 //fetching data from database :
 const getAllMovies = async()=>{
@@ -29,7 +28,6 @@ const router = createBrowserRouter([
   {
     path:"/", element:<MainNavigation/>, children:[
       {path:"/",element:<Home/>,loader:getAllMovies},
-      {path:"/profile",element:<Profile/>,loader:getAllMovies},
       {path:"/addMovie",element:<AddMovie/>},
       {path:"/favMovies",element:<FavMovie/>, loader:getFavMovies},
       {path:"/editMovie/:id",element:<EditMovie/>}
