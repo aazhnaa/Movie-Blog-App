@@ -6,8 +6,8 @@ const dotenv=require("dotenv").config() //to read values from the .env file and 
 const connectionDb=require("./config/connectionDb")
 const cors = require("cors")
 const PORT = process.env.PORT||3000 
-import fs from 'fs'; // or: const fs = require('fs');
-import path from 'path';
+const fs = require('fs');
+const path = require('path');
 
 const uploadDir = path.join(__dirname, 'uploads');
 
