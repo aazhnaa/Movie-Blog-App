@@ -19,6 +19,11 @@ app.use(express.static("public"))
 app.use("/",require("./routes/user"))
 app.use("/movie",require("./routes/movies"))
 
+app.get("/", (req, res) => {
+    res.send("API is running 🚀");
+});
+
+
 
 app.listen(PORT, (err)=>{
     console.log(`app is listening on port ${PORT}`)
