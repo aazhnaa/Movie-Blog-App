@@ -17,7 +17,7 @@ const MovieCard = ({movie}) => {
   return (
     <>
                 <div className="max-w-sm bg-gray-300 shadow-lg rounded-2xl overflow-hidden" key={movie.id}>
-                <img className="w-full h-80 object-cover" src={movie.poster ? `${backendURL}/images/${movie.poster}` : poster} />
+                <img className="w-full h-80 object-cover" src={movie.poster ? movie.poster : poster} />
                 <div className="p-4">
                   <h2 className="text-xl font-bold text-gray-800"><span>{movie.title}</span></h2>
                   <p className="text-gray-600 text-sm">Release Year: {movie.release_year}</p>
