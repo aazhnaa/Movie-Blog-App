@@ -84,7 +84,7 @@ const MovieGrid = () => {
                   className="w-full h-80 object-cover"
                   src={
                     movie.poster
-                      ? `${backendURL}/images/${movie.poster}`
+                      ? movie.poster
                       : poster
                   }
                 />
