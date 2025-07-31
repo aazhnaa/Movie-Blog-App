@@ -6,6 +6,7 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { NavLink } from 'react-router-dom';
 const MovieCard = ({movie}) => {  
   const backendURL = import.meta.env.VITE_BACKEND_URL ;
+  console.log(movie.poster)
   const deleteMovie=async(id)=>{
     try{
       await axios.delete(`${backendURL}/movie/${id}`)
