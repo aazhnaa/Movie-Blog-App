@@ -31,11 +31,15 @@ const addMovie =async(req,res)=>{
     let imagePublicId = ''
 
     if(req.file){
+        console.log("Image file received:", req.file);
         const uploadResponse = await cloudinary.uploader.upload(req.file.path);
         imageUrl = uploadResponse.secure_url;
         imagePublicId = uploadResponse.public_id;
         console.log("Image uploaded to Cloudinary:", imageUrl);
         fs.unlinkSync(req.file.path);        
+    }
+    else {
+        console.log("no image received")
     }
 
     const newMovie = new Movies({
