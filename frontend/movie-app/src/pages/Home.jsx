@@ -43,11 +43,11 @@ const Home = () => {
       </section>    
       
       {(isLogin)?
-        <div className='flex flex-col justify-center items-center text-center text-2xl font-bold text-blue-950 '>
+        <div className='flex flex-col h-full justify-center items-center text-center text-2xl font-bold text-blue-950 '>
           <h1 className='p-4'>Login to see your movie reviews!</h1>
           <button className="text-black bg-slate-500 rounded-lg pl-4 pr-4 pt-2 pb-2  hover:text-blue-800" onClick={handleLogin}>Login</button> 
         </div> :
-        <div className="card-container grid-cols-2 grid-rows-1">
+        <div className="card-container h-full grid-cols-2 grid-rows-1">
           <p className='font-bold text-3xl text-blue-950 p-8'>Your Movies</p>
         <MovieGrid/>
       </div>
